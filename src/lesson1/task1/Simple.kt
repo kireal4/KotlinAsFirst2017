@@ -121,5 +121,5 @@ fun accountInThreeYears(initial: Int, percent: Int): Double {
 fun numberRevert(number: Int) {
     print(number % 10)
     print(number / 10 % 10)
-    print(number / 100.0)
+    print(number / 100)
 }
