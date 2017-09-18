@@ -17,7 +17,12 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int): Boolean = TODO()
+fun isNumberHappy(number: Int): Boolean {
+    return when {
+        (number / 1000) + (number / 100 % 10) == (number % 10) + (number / 10 % 10) -> true
+        else -> false
+    }
+}
 
 /**
  * Простая
@@ -26,7 +31,15 @@ fun isNumberHappy(number: Int): Boolean = TODO()
  * Определить, угрожают ли они друг другу. Вернуть true, если угрожают.
  * Считать, что ферзи не могут загораживать друг друга.
  */
-fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = TODO()
+fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
+    val z = x1 - x2
+    val x = y1 - y2
+    return when {
+        x1 == x2 || y1 == y2 -> true
+        z*z == x*x -> true
+        else -> false
+    }
+}
 
 /**
  * Средняя
@@ -47,4 +60,24 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = TODO()
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
+    return when {
+        a <= b && b <= c && a <= r && b <= s -> true
+         a <= c && c <= b && a <= r && c <= s -> true
+          a <= b && b <= c && a <= s && b <= r -> true
+           a <= c && c <= b && a <= s && c <= r -> true
+
+
+            b <= c && c <= a && b <= r && c <= s -> true
+             b <= a && a <= c && b <= r && a <= s -> true
+              b <= c && c <= a && b <= s && c <= r -> true
+               b <= a && a <= c && b <= s && a <= r -> true
+
+
+                c <= a && a <= b && c <= r && a <= s -> true
+                 c <= b && b <= a && c <= r && b <= s -> true
+                  c <= a && a <= b && c <= s && a <= r -> true
+                   c <= b && b <= a && c <= s && b <= r -> true
+        else -> false
+    }
+}

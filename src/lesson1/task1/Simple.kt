@@ -69,7 +69,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = (sagenes
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
 fun angleInRadian(grad: Int, min: Int, sec: Int): Double {
-    return grad * 0.0174533 + min * 0.0166667 * 0.0174533 + sec * 0.00027777833333 * 0.0174533
+    return grad * PI / 180 + min * PI / (180 * 60) + sec * PI / (180 * 60 * 60)
 }
 
 /**
@@ -108,7 +108,7 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
 fun accountInThreeYears(initial: Int, percent: Int): Double {
-    return (initial + ((initial * (percent * 0.01)) + ((initial * (percent * 0.01) + initial) * (percent * 0.01)) + ((((initial * (percent * 0.01) + initial) * (percent * 0.01) + initial) + (initial * (percent * 0.01))) * (percent * 0.01))))
+    return initial + ((initial * (percent * 0.01)) + ((initial * (percent * 0.01) + initial) * (percent * 0.01)) + ((((initial * (percent * 0.01) + initial) * (percent * 0.01) + initial) + (initial * (percent * 0.01))) * (percent * 0.01)))
 }
 
 
