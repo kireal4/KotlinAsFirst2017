@@ -54,14 +54,14 @@ fun ageDescription(age: Int): String {
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
                    t3: Double, v3: Double): Double {
-    val s1 = t1 * v1
-    val s2 = t2 * v2
-    val s3 = t3 * v3
-    val so2 = (s1 + s2 + s3) / 2    // половина всего пути
+    val firstWay = t1 * v1
+    val secondWay = t2 * v2
+    val thirdWay = t3 * v3
+    val halfWay = (firstWay + secondWay + thirdWay) / 2    // половина всего пути
         return when {
-            s1 >= so2 -> so2 / v1
-            (s1 + s2) >= so2 -> (so2 - s1) / v2 + t1
-            else -> (so2 - s1 - s2) / v3 + t1 + t2
+            firstWay >= halfWay -> halfWay / v1
+            (firstWay + secondWay) >= halfWay -> (halfWay - firstWay) / v2 + t1
+            else -> (halfWay - firstWay - secondWay) / v3 + t1 + t2
         }
 }
 
@@ -100,10 +100,12 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           bishopX: Int, bishopY: Int): Int {
     val a = kingX - bishopX
     val b = kingY - bishopY
+    val c = kingX == rookX || kingY == rookY
+    val x = ( a * a == b * b )
     return when {
-        (kingX == rookX || kingY == rookY) && (a*a == b*b) -> 3
-        (a*a == b*b) -> 2
-        kingX == rookX || kingY == rookY -> 1
+        c && x -> 3
+        x -> 2
+        c -> 1
         else -> 0
     }
 }
@@ -121,9 +123,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val x = b * b
     val q = c * c
     return when {
-        (a > b) && (a > c) && (b + c < a) -> -1
-        (b > a) && (b > c) && (a + c < b) -> -1
-        (c > b) && (c > a) && (b + a < c) -> -1
+        (a + b) < c || (a + c) < b || (b + c) < a -> -1
         (z + x == q) || (z + q == x) || (q + x == z) -> 1
         z + x < q || z + q < x || q + x < z -> 2
         else -> 0

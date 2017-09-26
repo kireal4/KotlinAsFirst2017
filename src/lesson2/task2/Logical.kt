@@ -35,8 +35,7 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
     val z = x1 - x2
     val x = y1 - y2
     return when {
-        x1 == x2 || y1 == y2 -> true
-        z*z == x*x -> true
+        x1 == x2 || y1 == y2 || z*z == x*x  -> true
         else -> false
     }
 }
@@ -49,7 +48,12 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
  * Вернуть true, если утверждение верно
  */
 fun circleInside(x1: Double, y1: Double, r1: Double,
-                 x2: Double, y2: Double, r2: Double): Boolean = TODO()
+                 x2: Double, y2: Double, r2: Double): Boolean {
+    return when {
+        r2 >= r1 + Math.sqrt(sqr(y2 - y1)) + sqr(x2 - x1) -> true
+        else -> false
+    }
+}
 
 /**
  * Средняя
@@ -62,22 +66,7 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
     return when {
-        a <= b && b <= c && a <= r && b <= s -> true
-         a <= c && c <= b && a <= r && c <= s -> true
-          a <= b && b <= c && a <= s && b <= r -> true
-           a <= c && c <= b && a <= s && c <= r -> true
-
-
-            b <= c && c <= a && b <= r && c <= s -> true
-             b <= a && a <= c && b <= r && a <= s -> true
-              b <= c && c <= a && b <= s && c <= r -> true
-               b <= a && a <= c && b <= s && a <= r -> true
-
-
-                c <= a && a <= b && c <= r && a <= s -> true
-                 c <= b && b <= a && c <= r && b <= s -> true
-                  c <= a && a <= b && c <= s && a <= r -> true
-                   c <= b && b <= a && c <= s && b <= r -> true
-        else -> false
+        s < r && s < a && s < b && s < c || r <= s && r < a && r < b && r < c -> false
+        else -> true
     }
 }
