@@ -98,14 +98,14 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
-    val a = kingX - bishopX
-    val b = kingY - bishopY
-    val c = kingX == rookX || kingY == rookY
-    val x = ( a * a == b * b )
+    val threatX = kingX - bishopX
+    val threatY = kingY - bishopY
+    val threatXorY = kingX == rookX || kingY == rookY
+    val threatXY = ( threatX * threatX == threatY * threatY )
     return when {
-        c && x -> 3
-        x -> 2
-        c -> 1
+        threatXorY && threatXY -> 3
+        threatXY -> 2
+        threatXorY -> 1
         else -> 0
     }
 }
@@ -119,13 +119,13 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val z = a * a
-    val x = b * b
-    val q = c * c
+    val squareA = a * a
+    val squareB = b * b
+    val squareC = c * c
     return when {
         (a + b) < c || (a + c) < b || (b + c) < a -> -1
-        (z + x == q) || (z + q == x) || (q + x == z) -> 1
-        z + x < q || z + q < x || q + x < z -> 2
+        (squareA + squareB == squareC) || (squareA + squareC == squareB) || (squareC + squareB == squareA) -> 1
+        squareA + squareB < squareC || squareA + squareC < squareB || squareC + squareB < squareA -> 2
         else -> 0
     }
 }
