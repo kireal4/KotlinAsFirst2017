@@ -1,6 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson3.task1
 
+import lesson4.task1.abs
 import lesson8.task1.countSubstrings
 
 /**
@@ -65,7 +66,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
 fun digitNumber(n: Int): Int {
     if (n == 0) return 1
     var count = 0
-    var x = n
+    var x = Math.abs(n)
     while (x > 0) {
         x /= 10
         count ++
@@ -99,18 +100,10 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var max = 0
-    var min = 0
-    var x = 0
-    var y = 2
     var s = 0
-    if (m >= n) max = m  else max = n
-    if (m < n) min = m  else min = n
-    for (i in max .. m * n){
+    for (i in maxOf(m , n) .. m * n){
         s = i
-            if (i % max == 0) x = 1 else x = 0
-                    if (i % min == 0) y = 1 else y = 2
-        if (x == y) break
+            if (i % maxOf(m , n) == 0 && i % minOf(m , n) == 0) break
     }
     return s
  }
@@ -121,12 +114,12 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var x = 0
+    var minDiv = 0
     for(i in 2..n){
-        x = i
+        minDiv = i
         if(n % i == 0) return i
     }
-    return x
+    return minDiv
 }
 
 /**
@@ -150,21 +143,16 @@ fun maxDivisor(n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
-    var min = 0
-    var max = 0
-    var x = 0
-    var y = 1
-    if (m >= n) max = m  else max = n
-    if (m <= n) min = m  else min = n
-    for(i in 2..min){
-        if (min % i == 0) x = 2 else x = 0
-        if (max % i == 0) y = 2 else y = 1
-        if (x == y) break
+fun isCoPrime(m: Int, n: Int): () -> Boolean {
+    var logicalVariable = 0
+    var logicalVariable2 = 1
+    for(i in 2..minOf(m , n)){
+        if (minOf(m , n) % i == 0) logicalVariable = 2 else logicalVariable = 0
+        if (maxOf(m , n) % i == 0) logicalVariable2 = 2 else logicalVariable2 = 1
+        if (logicalVariable == logicalVariable2) break
     }
-    return when{
-        (x == y) -> false
-        else -> true
+    return{
+        (logicalVariable != logicalVariable2)
     }
 }
 
@@ -176,20 +164,11 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var x = 0
-    for(i in m..n){
-        for(q in 1..i){
-            if(m <= q * q && q * q  <= n) x = 1
-            if(x == 1) break
-        }
-        if(x == 1) break
+    for (i  in 0..n) {
+        if ((m <= i * i) && (i * i <= n)) return true
     }
-    return when {
-        (x == 1) -> true
-        else -> false
-    }
+    return false
 }
-
 /**
  * Средняя
  *
@@ -239,21 +218,22 @@ fun revert(n: Int): Int {
  */
 fun isPalindrome(n: Int): Boolean { // в процессе
     var num = n
-    val num1 = n
+    var num1 = n
     var count = 0
     var noname = 0
-    var k = 0
-    var kk = 0
+    var nlast = 0
+    var nfirst = 0
     while(num > 0){
         count += 1
         num /= 10
     }
-    if(count == 1) noname = 1
-    for (i in 1..count / 2){
-        k = (num1 / Math.pow(10.0 , count - i - 1.0 )).toInt()
-        kk = (num1 % Math.pow(10.0 , (count - (count - i * 1.0)))).toInt()
-        if(k == kk) noname = 1 else noname = 0
-        if(k > kk || k < kk) break
+    if(count == 1) return true
+    while(count > 0){
+        nfirst = (num / Math.pow(10.0 , count * 1.0)).toInt()
+        nlast = num % 10
+        num = (num - (num / Math.pow(10.0 , count * 1.0) * Math.pow(10.0, count * 1.0)) / 10).toInt()
+        count -= 2
+        if(nfirst == nlast) noname = 1 else return false
     }
    return when{
        noname == 1 -> true

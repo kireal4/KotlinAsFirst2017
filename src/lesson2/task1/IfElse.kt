@@ -100,12 +100,12 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           bishopX: Int, bishopY: Int): Int {
     val threatX = kingX - bishopX
     val threatY = kingY - bishopY
-    val threatXorY = kingX == rookX || kingY == rookY
-    val threatXY = ( threatX * threatX == threatY * threatY )
+    val isThreatenedByXOrY = kingX == rookX || kingY == rookY
+    val isThreatXAndY = ( threatX * threatX == threatY * threatY )
     return when {
-        threatXorY && threatXY -> 3
-        threatXY -> 2
-        threatXorY -> 1
+        isThreatenedByXOrY && isThreatXAndY -> 3
+        isThreatXAndY -> 2
+        isThreatenedByXOrY -> 1
         else -> 0
     }
 }
@@ -122,10 +122,15 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val squareA = a * a
     val squareB = b * b
     val squareC = c * c
+    val sumSquareASquareB = squareA + squareB
+    val sumSquareASquareC = squareA + squareC
+    val sumSquareBSquareC = squareC + squareB
     return when {
         (a + b) < c || (a + c) < b || (b + c) < a -> -1
-        (squareA + squareB == squareC) || (squareA + squareC == squareB) || (squareC + squareB == squareA) -> 1
-        squareA + squareB < squareC || squareA + squareC < squareB || squareC + squareB < squareA -> 2
+        (sumSquareASquareB == squareC) || (sumSquareASquareC == squareB)
+                || (sumSquareBSquareC == squareA) -> 1
+        sumSquareASquareB < squareC || sumSquareASquareC < squareB
+                || sumSquareBSquareC < squareA -> 2
         else -> 0
     }
 }
