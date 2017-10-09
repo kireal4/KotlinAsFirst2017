@@ -2,7 +2,6 @@
 package lesson3.task1
 
 import lesson4.task1.abs
-import lesson8.task1.countSubstrings
 
 /**
  * Пример
@@ -103,7 +102,7 @@ fun lcm(m: Int, n: Int): Int {
     var s = 0
     for (i in maxOf(m , n) .. m * n){
         s = i
-            if (i % maxOf(m , n) == 0 && i % minOf(m , n) == 0) break
+        if (i % maxOf(m , n) == 0 && i % minOf(m , n) == 0) break
     }
     return s
  }
