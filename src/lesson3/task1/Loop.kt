@@ -100,12 +100,12 @@ fun fib(n: Int): Int {
  */
 fun lcm(m: Int, n: Int): Int {
     var s = 0
-    for (i in maxOf(m , n) .. m * n){
+    for (i in 1 .. m * n){
         s = i
-        if (i % maxOf(m , n) == 0 && i % minOf(m , n) == 0) break
+        if (i % m == 0 && i % n == 0) break
     }
     return s
- }
+}
 
 /**
  * Простая
@@ -142,18 +142,7 @@ fun maxDivisor(n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): () -> Boolean {
-    var logicalVariable = 0
-    var logicalVariable2 = 1
-    for(i in 2..minOf(m , n)){
-        if (minOf(m , n) % i == 0) logicalVariable = 2 else logicalVariable = 0
-        if (maxOf(m , n) % i == 0) logicalVariable2 = 2 else logicalVariable2 = 1
-        if (logicalVariable == logicalVariable2) break
-    }
-    return{
-        (logicalVariable != logicalVariable2)
-    }
-}
+fun isCoPrime(m: Int, n: Int): Boolean = TODO()
 
 /**
  * Простая
@@ -215,30 +204,7 @@ fun revert(n: Int): Int {
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean { // в процессе
-    var num = n
-    var num1 = n
-    var count = 0
-    var noname = 0
-    var nlast = 0
-    var nfirst = 0
-    while(num > 0){
-        count += 1
-        num /= 10
-    }
-    if(count == 1) return true
-    while(count > 0){
-        nfirst = (num / Math.pow(10.0 , count * 1.0)).toInt()
-        nlast = num % 10
-        num = (num - (num / Math.pow(10.0 , count * 1.0) * Math.pow(10.0, count * 1.0)) / 10).toInt()
-        count -= 2
-        if(nfirst == nlast) noname = 1 else return false
-    }
-   return when{
-       noname == 1 -> true
-       else -> false
-   }
-}
+fun isPalindrome(n: Int): Boolean = TODO()
 
 /**
  * Средняя
