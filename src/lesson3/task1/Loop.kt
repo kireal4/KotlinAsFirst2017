@@ -65,9 +65,9 @@ fun digitCountInNumber(n: Int, m: Int): Int =
 fun digitNumber(n: Int): Int {
     if (n == 0) return 1
     var count = 0
-    var x = Math.abs(n)
-    while (x > 0) {
-        x /= 10
+    var n1 : Int = n
+    while (n1 != 0) {
+        n1 /= 10
         count ++
     }
     return count
@@ -81,15 +81,15 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-    var fibX = 1
-    var fibY = 1
-    var fibZ = 1
+    var fibPrevious = 1
+    var fibNow = 1
+    var fibNowCopy = 1
     for (t in 3 .. n){
-        fibX = fibY
-        fibY = fibX + fibZ
-        fibZ = fibX
+        fibPrevious = fibNow
+        fibNow = fibPrevious + fibNowCopy
+        fibNowCopy = fibPrevious
     }
-    return fibY
+    return fibNow
 }
 
 /**
@@ -99,13 +99,13 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var s = 0
-    for (i in maxOf(m , n) .. m * n){
-        s = i
-        if (i % maxOf(m , n) == 0 && i % minOf(m , n) == 0) break
+    var multiple = 0
+    for (i in maxOf(m, n)..m * n) {
+        multiple = i
+        if (i % m == 0 && i % n == 0) break
     }
-    return s
- }
+    return multiple
+}
 
 /**
  * Простая
@@ -127,12 +127,12 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var x = 0
+    var maxDiv = 0
     for(i in n / 2 downTo 1){
-        x = i
+        maxDiv = i
         if(n % i == 0) return i
     }
-    return x
+    return maxDiv
 }
 
 /**
@@ -142,18 +142,7 @@ fun maxDivisor(n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): () -> Boolean {
-    var logicalVariable = 0
-    var logicalVariable2 = 1
-    for(i in 2..minOf(m , n)){
-        if (minOf(m , n) % i == 0) logicalVariable = 2 else logicalVariable = 0
-        if (maxOf(m , n) % i == 0) logicalVariable2 = 2 else logicalVariable2 = 1
-        if (logicalVariable == logicalVariable2) break
-    }
-    return{
-        (logicalVariable != logicalVariable2)
-    }
-}
+fun isCoPrime(m: Int, n: Int): Boolean = TODO()
 
 /**
  * Простая
@@ -163,8 +152,10 @@ fun isCoPrime(m: Int, n: Int): () -> Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    for (i  in 0..n) {
-        if ((m <= i * i) && (i * i <= n)) return true
+    val nSqrt = Math.sqrt(n.toDouble()).toInt()
+    for (i  in 1..nSqrt) {
+        if (m <= Math.pow(i.toDouble(), 2.0) && n >= Math.pow(i.toDouble(), 2.0) ||
+                (m == 0 && n == 0)) return true
     }
     return false
 }
@@ -193,17 +184,10 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Не использовать строки при решении задачи.
  */
 fun revert(n: Int): Int {
-    var num = n
     var num1 = n
-    var count = 0
     var revN = 0
-    while(num > 0){
-        count += 1
-        num /= 10
-    }
     while (num1 > 0) {
-        count -= 1
-        revN = (revN + (num1 % 10) * Math.pow(10.0 , count * 1.0)).toInt()
+        revN = num1 % 10 + revN * 10
         num1 /= 10
     }
     return revN
@@ -215,30 +199,7 @@ fun revert(n: Int): Int {
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean { // в процессе
-    var num = n
-    var num1 = n
-    var count = 0
-    var noname = 0
-    var nlast = 0
-    var nfirst = 0
-    while(num > 0){
-        count += 1
-        num /= 10
-    }
-    if(count == 1) return true
-    while(count > 0){
-        nfirst = (num / Math.pow(10.0 , count * 1.0)).toInt()
-        nlast = num % 10
-        num = (num - (num / Math.pow(10.0 , count * 1.0) * Math.pow(10.0, count * 1.0)) / 10).toInt()
-        count -= 2
-        if(nfirst == nlast) noname = 1 else return false
-    }
-   return when{
-       noname == 1 -> true
-       else -> false
-   }
-}
+fun isPalindrome(n: Int): Boolean = n == revert(n)
 
 /**
  * Средняя
