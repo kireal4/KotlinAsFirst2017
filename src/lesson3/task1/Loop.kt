@@ -99,12 +99,12 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var multiple = 0
+    var multipleK = 0
     for (i in maxOf(m, n)..m * n) {
-        multiple = i
+        multipleK = i
         if (i % m == 0 && i % n == 0) break
     }
-    return multiple
+    return multipleK
 }
 
 /**
@@ -153,9 +153,9 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     val nSqrt = Math.sqrt(n.toDouble()).toInt()
+    if(m == 0 && n == 0) return true
     for (i  in 1..nSqrt) {
-        if (m <= Math.pow(i.toDouble(), 2.0) && n >= Math.pow(i.toDouble(), 2.0) ||
-                (m == 0 && n == 0)) return true
+        if (m <= Math.pow(i.toDouble(), 2.0) && n >= Math.pow(i.toDouble(), 2.0)) return true
     }
     return false
 }
