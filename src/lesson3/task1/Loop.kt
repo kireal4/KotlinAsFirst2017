@@ -65,7 +65,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
 fun digitNumber(n: Int): Int {
     if (n == 0) return 1
     var count = 0
-    var n1 : Int = n
+    var n1 = n
     while (n1 != 0) {
         n1 /= 10
         count ++
@@ -99,12 +99,22 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var multipleK = 0
-    for (i in maxOf(m, n)..m * n) {
-        multipleK = i
-        if (i % m == 0 && i % n == 0) break
+    var remainder = 0
+    var min = minOf(m,n)
+    var max = maxOf(m,n)
+    var NOK = 0
+    var quantityMinInMax = 0
+    var maximumNumberOfMinAtMax = 0
+    while (min > 0) {
+        quantityMinInMax = max / min
+        maximumNumberOfMinAtMax = quantityMinInMax * min
+        remainder = max - maximumNumberOfMinAtMax
+        NOK = m * n / min
+        if (remainder == 0) break
+        max = min
+        min = remainder
     }
-    return multipleK
+    return NOK
 }
 
 /**
@@ -130,7 +140,7 @@ fun maxDivisor(n: Int): Int {
     var maxDiv = 0
     for(i in n / 2 downTo 1){
         maxDiv = i
-        if(n % i == 0) return i
+        if(n % i == 0) break
     }
     return maxDiv
 }
@@ -142,7 +152,22 @@ fun maxDivisor(n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+    var remainder = 0
+    var min = minOf(m,n)
+    var max = maxOf(m,n)
+    var quantityMinInMax = 0
+    var maximumNumberOfMinAtMax = 0
+    while (min > 0) {
+        quantityMinInMax = max / min
+        maximumNumberOfMinAtMax = quantityMinInMax * min
+        remainder = max - maximumNumberOfMinAtMax
+        if (remainder == 0) break
+        max = min
+        min = remainder
+    }
+    return min == 1
+}
 
 /**
  * Простая
@@ -153,8 +178,9 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     val nSqrt = Math.sqrt(n.toDouble()).toInt()
+    val mSqrt = Math.sqrt(m.toDouble()).toInt()
     if(m == 0 && n == 0) return true
-    for (i  in 1..nSqrt) {
+    for (i  in mSqrt..nSqrt) {
         if (m <= Math.pow(i.toDouble(), 2.0) && n >= Math.pow(i.toDouble(), 2.0)) return true
     }
     return false
