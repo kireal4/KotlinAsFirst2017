@@ -113,7 +113,7 @@ fun abs(v: List<Any>): Double = TODO()
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = TODO()
+fun mean(list: List<Double>): Double = if (list.isEmpty()) 0.0 else list.sum() / list.size
 
 /**
  * Средняя
@@ -123,8 +123,17 @@ fun mean(list: List<Double>): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = TODO()
-
+fun center(list: MutableList<Double>): MutableList<Double> =
+        when {
+            list.size != 0 -> {
+                val average = list.sum() / list.size
+                for (elCount in 0 until list.size) {
+                    list[elCount] -= average
+                }
+                list
+            }
+            else -> list
+        }
 /**
  * Средняя
  *
@@ -132,7 +141,16 @@ fun center(list: MutableList<Double>): MutableList<Double> = TODO()
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.0.
  */
-fun times(a: List<Double>, b: List<Double>): Double = TODO()
+fun times(a: List<Double>, b: List<Double>): Double =
+        when {
+            a.size == 0 || b.size == 0 -> 0.0
+            else -> {
+                var scalarProduct = 0.0
+                for (i in 0 until a.size)
+                    scalarProduct += a[i] * b[i]
+                scalarProduct
+            }
+        }
 
 /**
  * Средняя
@@ -142,7 +160,16 @@ fun times(a: List<Double>, b: List<Double>): Double = TODO()
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0.0 при любом x.
  */
-fun polynom(p: List<Double>, x: Double): Double = TODO()
+fun polynom(p: List<Double>, x: Double): Double =
+        when {
+            p.size != 0 -> {
+                var pFromX = 0.0
+                for (i in 0 until p.size)
+                    pFromX += p[i] * Math.pow(x, i.toDouble())
+                pFromX
+            }
+            else -> 0.0
+        }
 
 /**
  * Средняя
@@ -163,7 +190,19 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> = TODO()
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int> {
+    var num = n
+    val list = mutableListOf<Int>()
+    var firstDivisor = 2
+    while (num > 1) {
+        if (num % firstDivisor != 0) firstDivisor++
+            else {
+            num /= firstDivisor
+            list.add(firstDivisor)
+        }
+    }
+    return list.toList()
+}
 
 /**
  * Сложная

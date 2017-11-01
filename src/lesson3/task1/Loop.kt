@@ -102,19 +102,15 @@ fun lcm(m: Int, n: Int): Int {
     var remainder = 0
     var min = minOf(m,n)
     var max = maxOf(m,n)
-    var NOK = 0
-    var quantityMinInMax = 0
-    var maximumNumberOfMinAtMax = 0
+    var LCM = 0
     while (min > 0) {
-        quantityMinInMax = max / min
-        maximumNumberOfMinAtMax = quantityMinInMax * min
-        remainder = max - maximumNumberOfMinAtMax
-        NOK = m * n / min
+        remainder = max % min
+        LCM = m * n / min
         if (remainder == 0) break
         max = min
         min = remainder
     }
-    return NOK
+    return LCM
 }
 
 /**
@@ -156,12 +152,8 @@ fun isCoPrime(m: Int, n: Int): Boolean {
     var remainder = 0
     var min = minOf(m,n)
     var max = maxOf(m,n)
-    var quantityMinInMax = 0
-    var maximumNumberOfMinAtMax = 0
     while (min > 0) {
-        quantityMinInMax = max / min
-        maximumNumberOfMinAtMax = quantityMinInMax * min
-        remainder = max - maximumNumberOfMinAtMax
+        remainder = max % min
         if (remainder == 0) break
         max = min
         min = remainder
@@ -179,9 +171,8 @@ fun isCoPrime(m: Int, n: Int): Boolean {
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     val nSqrt = Math.sqrt(n.toDouble()).toInt()
     val mSqrt = Math.sqrt(m.toDouble()).toInt()
-    if(m == 0 && n == 0) return true
     for (i  in mSqrt..nSqrt) {
-        if (m <= Math.pow(i.toDouble(), 2.0) && n >= Math.pow(i.toDouble(), 2.0)) return true
+        if ((m == 0 && n == 0) || (m <= Math.pow(i.toDouble(), 2.0) && n >= Math.pow(i.toDouble(), 2.0))) return true
     }
     return false
 }
@@ -192,7 +183,18 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    var sinInaccuracy = x % (2 * Math.PI)
+    var count = 1
+    val sin = sinInaccuracy
+    var instance = sinInaccuracy
+    while (Math.abs(instance) >= eps) {
+        instance =  sin * (-instance * sin / ((count * 2 + 1) * (count * 2)).toDouble())
+        sinInaccuracy += instance
+        count += 1
+    }
+    return sinInaccuracy
+}
 
 /**
  * Средняя
@@ -201,7 +203,18 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var cosInaccuracy = 1.0
+    var count = 1
+    val cos = x % (2 * Math.PI)
+    var instance = 1.0
+    while (Math.abs(instance) >= eps) {
+        instance =  cos * (-instance * cos / ((count * 2 - 1) * (count * 2)).toDouble())
+        cosInaccuracy += instance
+        count += 1
+    }
+    return cosInaccuracy
+}
 
 /**
  * Средняя
@@ -233,7 +246,15 @@ fun isPalindrome(n: Int): Boolean = n == revert(n)
  * Для заданного числа n определить, содержит ли оно различающиеся цифры.
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var remainderFrom10 = n % 10
+    var num = n / 10
+    while (num > 0) {
+        if (remainderFrom10 != num % 10) return true
+        num /= 10
+    }
+    return false
+}
 
 /**
  * Сложная
