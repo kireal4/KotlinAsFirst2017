@@ -172,7 +172,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
     val nSqrt = Math.sqrt(n.toDouble()).toInt()
     val mSqrt = Math.sqrt(m.toDouble()).toInt()
     for (i  in mSqrt..nSqrt) {
-        if ((m == 0 && n == 0) || (m <= Math.pow(i.toDouble(), 2.0) && n >= Math.pow(i.toDouble(), 2.0))) return true
+        if (m <= Math.pow(i.toDouble(), 2.0) && n >= Math.pow(i.toDouble(), 2.0)) return true
     }
     return false
 }
@@ -247,7 +247,7 @@ fun isPalindrome(n: Int): Boolean = n == revert(n)
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
 fun hasDifferentDigits(n: Int): Boolean {
-    var remainderFrom10 = n % 10
+    val remainderFrom10 = n % 10
     var num = n / 10
     while (num > 0) {
         if (remainderFrom10 != num % 10) return true
