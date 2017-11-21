@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson3.task1
 
 import lesson4.task1.abs
@@ -36,7 +37,7 @@ fun isPrime(n: Int): Boolean {
  */
 fun isPerfect(n: Int): Boolean {
     var sum = 1
-    for (m in 2..n/2) {
+    for (m in 2..n / 2) {
         if (n % m > 0) continue
         sum += m
         if (sum > n) break
@@ -68,7 +69,7 @@ fun digitNumber(n: Int): Int {
     var n1 = n
     while (n1 != 0) {
         n1 /= 10
-        count ++
+        count++
     }
     return count
 }
@@ -84,7 +85,7 @@ fun fib(n: Int): Int {
     var fibPrevious = 1
     var fibNow = 1
     var fibNowCopy = 1
-    for (t in 3 .. n){
+    for (t in 3..n) {
         fibPrevious = fibNow
         fibNow = fibPrevious + fibNowCopy
         fibNowCopy = fibPrevious
@@ -100,8 +101,8 @@ fun fib(n: Int): Int {
  */
 fun lcm(m: Int, n: Int): Int {
     var remainder = 0
-    var min = minOf(m,n)
-    var max = maxOf(m,n)
+    var min = minOf(m, n)
+    var max = maxOf(m, n)
     var LCM = 0
     while (min > 0) {
         remainder = max % min
@@ -119,10 +120,11 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var minDiv = 0
-    for(i in 2..n){
+    var minDiv = 2
+    for (i in 2..n / 2) {
         minDiv = i
-        if(n % i == 0) return i
+        if (n % i == 0) return i
+        if (n - i * 2 == 1) minDiv = n
     }
     return minDiv
 }
@@ -133,12 +135,10 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var maxDiv = 0
-    for(i in n / 2 downTo 1){
-        maxDiv = i
-        if(n % i == 0) break
+    for (i in n / 2 downTo 1) {
+        if (n % i == 0) return i
     }
-    return maxDiv
+    return 0
 }
 
 /**
@@ -150,8 +150,8 @@ fun maxDivisor(n: Int): Int {
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
     var remainder = 0
-    var min = minOf(m,n)
-    var max = maxOf(m,n)
+    var min = minOf(m, n)
+    var max = maxOf(m, n)
     while (min > 0) {
         remainder = max % min
         if (remainder == 0) break
@@ -169,13 +169,14 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    val nSqrt = Math.sqrt(n.toDouble()).toInt()
-    val mSqrt = Math.sqrt(m.toDouble()).toInt()
-    for (i  in mSqrt..nSqrt) {
+    val nSqrt = Math.round(Math.sqrt(n.toDouble()))
+    val mSqrt = Math.round(Math.sqrt(m.toDouble()))
+    for (i in mSqrt..nSqrt) {
         if (m <= Math.pow(i.toDouble(), 2.0) && n >= Math.pow(i.toDouble(), 2.0)) return true
     }
     return false
 }
+
 /**
  * Средняя
  *
@@ -189,7 +190,7 @@ fun sin(x: Double, eps: Double): Double {
     val sin = sinInaccuracy
     var instance = sinInaccuracy
     while (Math.abs(instance) >= eps) {
-        instance =  sin * (-instance * sin / ((count * 2 + 1) * (count * 2)).toDouble())
+        instance = sin * (-instance * sin / ((count * 2 + 1) * (count * 2)).toDouble())
         sinInaccuracy += instance
         count += 1
     }
@@ -209,7 +210,7 @@ fun cos(x: Double, eps: Double): Double {
     val cos = x % (2 * Math.PI)
     var instance = 1.0
     while (Math.abs(instance) >= eps) {
-        instance =  cos * (-instance * cos / ((count * 2 - 1) * (count * 2)).toDouble())
+        instance = cos * (-instance * cos / ((count * 2 - 1) * (count * 2)).toDouble())
         cosInaccuracy += instance
         count += 1
     }
@@ -231,6 +232,7 @@ fun revert(n: Int): Int {
     }
     return revN
 }
+
 /**
  * Средняя
  *
