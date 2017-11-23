@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson5.task1
 
 /**
@@ -48,12 +49,10 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
@@ -66,7 +65,26 @@ fun main(args: Array<String>) {
  * День и месяц всегда представлять двумя цифрами, например: 03.04.2011.
  * При неверном формате входной строки вернуть пустую строку
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val month =
+            listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    val theDate = str.split(" ")
+    if (theDate.size == 3) {
+        try {
+            var month2 = 0
+            val day = theDate[0].toInt()
+            if ((day in 1..31) && (theDate[1] in month)) {
+                month2 = month.indexOf(theDate[1]) + 1
+                if ((month2 == 2 && day > 29) || (month2 == 4 && day > 30) || (month2 == 6 && day > 30) ||
+                        (month2 == 9 && day > 30) || (month2 == 11 && day > 30))
+                    return ""
+                else return String.format("%02d.%02d.%d", day, month2, theDate[2].toInt())
+            } else return ""
+        } catch (e: NumberFormatException) {
+            return ""
+        }
+    } else return ""
+}
 
 /**
  * Средняя
@@ -75,7 +93,22 @@ fun dateStrToDigit(str: String): String = TODO()
  * Перевести её в строковый формат вида "15 июля 2016".
  * При неверном формате входной строки вернуть пустую строку
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val month =
+            listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    val theDate = digital.split(".")
+    try {
+        val day = theDate[0].toInt()
+        val month2 = theDate[1].toInt()
+        if (theDate.size == 3) {
+            if (theDate[0].toInt() in 1..31 && month2 in 1..12)
+                return ("${day} ${month[month2 - 1]} ${theDate[2].toInt()}")
+            else return ""
+        } else return ""
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+}
 
 /**
  * Средняя
@@ -89,7 +122,19 @@ fun dateDigitToStr(digital: String): String = TODO()
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+
+fun flattenPhoneNumber(phone: String): String {
+    if (phone.length == 0) return ""
+    val permissibleChars = "+0123456789"
+    var totals = ""
+    for (i in phone) {
+        if (i in permissibleChars) totals += i
+        else
+            if (i != ' ' && i != '-' && i != '(' && i != ')')
+                return ""
+    }
+    return totals
+}
 
 /**
  * Средняя

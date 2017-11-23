@@ -38,6 +38,8 @@ class Tests {
         assertEquals("18.11.2018", dateStrToDigit("18 ноября 2018"))
         assertEquals("", dateStrToDigit("23"))
         assertEquals("03.04.2011", dateStrToDigit("3 апреля 2011"))
+        assertEquals("29.02.2016", dateStrToDigit("29 февраля 2016"))
+        assertEquals("", dateStrToDigit("31 апреля 2016"))
     }
 
     @Test
@@ -53,6 +55,7 @@ class Tests {
     @Test
     @Tag("Normal")
     fun flattenPhoneNumber() {
+        assertEquals("+79211234567", flattenPhoneNumber("+7 (921) 123-45-67"))
         assertEquals("+79211234567", flattenPhoneNumber("+7 (921) 123-45-67"))
         assertEquals("123456798", flattenPhoneNumber("12 --  34- 5 -- 67 -98"))
         assertEquals("", flattenPhoneNumber("ab-123"))
