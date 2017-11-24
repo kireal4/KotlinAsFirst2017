@@ -67,7 +67,8 @@ fun main(args: Array<String>) {
  */
 fun dateStrToDigit(str: String): String {
     val month =
-            listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+            listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+                    "августа", "сентября", "октября", "ноября", "декабря")
     val theDate = str.split(" ")
     if (theDate.size == 3) {
         try {
@@ -95,7 +96,8 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     val month =
-            listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+            listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+                    "августа", "сентября", "октября", "ноября", "декабря")
     val theDate = digital.split(".")
     try {
         val day = theDate[0].toInt()
@@ -146,7 +148,17 @@ fun flattenPhoneNumber(phone: String): String {
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int? {
+    try {
+        val jumpRes = jumps.split("%", " ", "-").filter { it != " " && it != "" }
+        if (jumpRes.size > 0) {
+            val maxJump = jumpRes.map { it.toInt() }.max()
+            return maxJump
+        } else return -1
+    } catch (e: NumberFormatException) {
+        return -1
+    }
+}
 
 /**
  * Сложная
