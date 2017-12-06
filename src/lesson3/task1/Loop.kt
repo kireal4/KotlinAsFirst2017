@@ -3,6 +3,7 @@
 package lesson3.task1
 
 import lesson4.task1.abs
+import java.lang.Math.*
 
 /**
  * Пример
@@ -123,7 +124,7 @@ fun minDivisor(n: Int): Int {
     var minDiv = n
     for (i in 2..n / 2) {
         minDiv = i
-        if (n % i == 0) return i
+        if (n % i == 0) break
         if (n - i * 2 == 1) minDiv = n
     }
     return minDiv
@@ -169,10 +170,10 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    val nSqrt = Math.round(Math.sqrt(n.toDouble()))
-    val mSqrt = Math.round(Math.sqrt(m.toDouble()))
+    val nSqrt = round(sqrt(n.toDouble()))
+    val mSqrt = round(sqrt(m.toDouble()))
     for (i in mSqrt..nSqrt) {
-        if (m <= Math.pow(i.toDouble(), 2.0) && n >= Math.pow(i.toDouble(), 2.0)) return true
+        if (m <= pow(i.toDouble(), 2.0) && n >= pow(i.toDouble(), 2.0)) return true
     }
     return false
 }

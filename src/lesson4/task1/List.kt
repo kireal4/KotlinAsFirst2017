@@ -3,6 +3,8 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson3.task1.isPrime
+import java.lang.Math.*
 
 /**
  * Пример
@@ -34,8 +36,8 @@ fun biRoots(a: Double, b: Double, c: Double): List<Double> {
     val d = discriminant(a, b, c)
     if (d < 0.0) return listOf()
     if (d == 0.0) return sqRoots(-b / (2 * a))
-    val y1 = (-b + Math.sqrt(d)) / (2 * a)
-    val y2 = (-b - Math.sqrt(d)) / (2 * a)
+    val y1 = (-b + sqrt(d)) / (2 * a)
+    val y2 = (-b - sqrt(d)) / (2 * a)
     return sqRoots(y1) + sqRoots(y2)
 }
 
@@ -188,11 +190,13 @@ fun factorize(n: Int): List<Int> {
     var num = n
     val list = mutableListOf<Int>()
     var firstDivisor = 2
-    while (num > 1) {
-        if (num % firstDivisor != 0) firstDivisor++
-        else {
-            num /= firstDivisor
-            list.add(firstDivisor)
+    if (isPrime(n) == true) list.add(num) else {
+        while (num > 1) {
+            if (num % firstDivisor != 0) firstDivisor++
+            else {
+                num /= firstDivisor
+                list.add(firstDivisor)
+            }
         }
     }
     return list
@@ -235,11 +239,10 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
-    val symbol = "abcdefghijklmnopqrstuvwxyz"
     val newList = convert(n, base)
-    var line = ""
+    var line = buildString {  }
     for (i in 0 until newList.size)
-        line += if (newList[i] > 9) symbol[newList[i] - 10]
+        line += if (newList[i] > 9) (newList[i] + 87).toChar()
         else newList[i]
     return line
 }
@@ -256,7 +259,7 @@ fun decimal(digits: List<Int>, base: Int): Int {
     val sizeList = digits.size - 1
     for (i in sizeList downTo 0) {
         val k = sizeList - i
-        decimalNumber += Math.pow(base.toDouble(), i.toDouble()).toInt() * digits[k]
+        decimalNumber += pow(base.toDouble(), i.toDouble()).toInt() * digits[k]
     }
     return decimalNumber
 }
@@ -290,9 +293,9 @@ fun decimalFromString(str: String, base: Int): Int {
 fun roman(n: Int): String {
     var copyN = n
     var countListChar = 12
-    val numbersInDecimal = listOf<Int>(1,4,5,9,10,40,50,90,100,400,500,900,1000)
+    val numbersInDecimal = listOf(1,4,5,9,10,40,50,90,100,400,500,900,1000)
     val numbersInRoman = listOf<String>("I","IV","V","IX","X","XL","L","XC","C","CD","D","CM","M")
-    var line = ""
+    var line = buildString {  }
     while(copyN > 0){
         if(copyN >= numbersInDecimal[countListChar]) {
             val count = copyN / numbersInDecimal[countListChar]

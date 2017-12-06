@@ -170,7 +170,18 @@ fun bestLongJump(jumps: String): Int? {
  * Прочитать строку и вернуть максимальную взятую высоту (230 в примере).
  * При нарушении формата входной строки вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    try {
+        val tryJumps = jumps.split(" ")
+        val successfulJumps = mutableListOf<Int>()
+        for (i in 1 until tryJumps.size step 2) {
+            if ('+' in tryJumps[i]) successfulJumps.add(tryJumps[i - 1].toInt())
+        }
+        return successfulJumps.map { it }.max().toString().toInt()
+    } catch (e: NumberFormatException) {
+        return -1
+    }
+}
 
 /**
  * Сложная
@@ -181,7 +192,22 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    try {
+        val numbers = expression.split(" ")
+        var answer = numbers[0].toInt()
+        for (i in 1 until numbers.size step 2) {
+            if (numbers[i] == "+")
+                answer += numbers[i + 1].toInt()
+            else
+                if (numbers[i] == "-")
+                    answer -= numbers[i + 1].toInt()
+        }
+        return answer
+    } catch (e: NumberFormatException) {
+        throw  IllegalArgumentException(e)
+    }
+}
 
 /**
  * Сложная
@@ -192,7 +218,15 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val string = str.toLowerCase().split(" ")
+    var index = 0
+    for (i in 0..string.size - 2) {
+        if (string[i] == string[i + 1]) return index
+        index += string[i].length + 1
+    }
+    return -1
+}
 
 /**
  * Сложная
