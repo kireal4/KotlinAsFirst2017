@@ -126,14 +126,14 @@ fun dateDigitToStr(digital: String): String {
  */
 
 fun flattenPhoneNumber(phone: String): String {
-    if (phone.length == 0) return ""
-    val permissibleChars = "+0123456789"
-    var totals = ""
+    if (phone.length == 0 || phone.indexOf('+') > 0) return ""
+    val permissibleChars = '0'..'9'
+    val permissibleChars2 = "() +-"
+    var totals = StringBuilder().toString()
     for (i in phone) {
-        if (i in permissibleChars) totals += i
-        else
-            if (i != ' ' && i != '-' && i != '(' && i != ')')
-                return ""
+        if (i !in permissibleChars && i !in permissibleChars2) return ""
+            if (i in permissibleChars || i == '+') totals += i
+                else if (i !in permissibleChars2) return ""
     }
     return totals
 }
@@ -149,15 +149,19 @@ fun flattenPhoneNumber(phone: String): String {
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int? {
-    try {
-        val jumpRes = jumps.split("%", " ", "-").filter { it != " " && it != "" }
-        if (jumpRes.size > 0) {
-            val maxJump = jumpRes.map { it.toInt() }.max()
-            return maxJump
-        } else return -1
-    } catch (e: NumberFormatException) {
-        return -1
-    }
+    if (jumps.isEmpty()) return -1
+    var maxJump = -1
+        val jumpRes = jumps.trim().split(" ")
+        for (i in jumpRes) {
+            try {
+                if (i.isNotEmpty() && i.toInt() > maxJump)
+                    maxJump = i.toInt()
+            } catch (e: NumberFormatException) {
+                if (i == " " || i == "-" || i == "%" || i == "") continue
+                else return -1
+            }
+        }
+        return maxJump
 }
 
 /**
@@ -171,16 +175,18 @@ fun bestLongJump(jumps: String): Int? {
  * При нарушении формата входной строки вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
+    var result = -1
     try {
         val tryJumps = jumps.split(" ")
         val successfulJumps = mutableListOf<Int>()
-        for (i in 1 until tryJumps.size step 2) {
-            if ('+' in tryJumps[i]) successfulJumps.add(tryJumps[i - 1].toInt())
+        for (i in 1..tryJumps.size - 1 step 2) {
+            val maxTry = tryJumps[i - 1].toInt()
+            if ('+' in tryJumps[i] && result < maxTry) result = maxTry
         }
-        return successfulJumps.map { it }.max().toString().toInt()
     } catch (e: NumberFormatException) {
         return -1
     }
+    return result
 }
 
 /**
@@ -196,12 +202,14 @@ fun plusMinus(expression: String): Int {
     try {
         val numbers = expression.split(" ")
         var answer = numbers[0].toInt()
-        for (i in 1 until numbers.size step 2) {
-            if (numbers[i] == "+")
-                answer += numbers[i + 1].toInt()
+        for (i in 2..numbers.size step 2) {
+            if (numbers[i - 1] == "+")
+                answer += numbers[i].toInt()
             else
-                if (numbers[i] == "-")
-                    answer -= numbers[i + 1].toInt()
+                if (numbers[i - 1] == "-") {
+                    answer -= numbers[i].toInt()
+        }
+        else throw IllegalArgumentException()
         }
         return answer
     } catch (e: NumberFormatException) {
@@ -239,7 +247,26 @@ fun firstDuplicateIndex(str: String): Int {
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть положительными
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    var maxPrice = 0.0
+    var nameOfProduct = ""
+    if (description.isEmpty()) return ""
+    try {
+        val goods = description.split("; ")
+        for (i in goods) {
+            val product = i.split(" ")
+            if (product.size != 2) return ""
+            val maxProduct = product[1].toDouble()
+            if (maxProduct >= maxPrice) {
+                maxPrice = maxProduct
+                nameOfProduct = product[0]
+            }
+        }
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+    return nameOfProduct
+}
 
 /**
  * Сложная
@@ -252,7 +279,36 @@ fun mostExpensive(description: String): String = TODO()
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int {
+    if (roman.isEmpty()) return -1
+    val numbersInDecimal =
+            listOf(1,4,5,9,10,40,50,90,100,400,500,900,1000)
+    val numbersInRoman =
+            listOf<String>("I","IV","V","IX","X","XL","L","XC","C","CD","D","CM","M")
+    var number = 0
+    var numbCount = 0
+    while (numbCount < roman.length) {
+        val firstNum = roman[numbCount].toString()
+        if (firstNum in numbersInRoman) {
+            if (numbCount < roman.length - 1) {
+                val secondNum = roman[numbCount + 1].toString()
+                if (((firstNum == "I" && secondNum == "V") ||
+                        (firstNum == "I" && secondNum == "X") ||
+                        (firstNum == "X" && secondNum == "L") ||
+                        (firstNum == "X" && secondNum == "C") ||
+                        (firstNum == "C" && secondNum == "D") ||
+                        (firstNum == "C" && secondNum == "M"))) {
+                    number += numbersInDecimal[numbersInRoman.indexOf(firstNum + secondNum)]
+                    numbCount++
+                } else
+                    number += numbersInDecimal[numbersInRoman.indexOf(firstNum)]
+            } else
+                number += numbersInDecimal[numbersInRoman.indexOf(firstNum)]
+        } else return -1
+        numbCount++
+    }
+    return number
+}
 
 /**
  * Очень сложная

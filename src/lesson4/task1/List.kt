@@ -240,9 +240,10 @@ fun convert(n: Int, base: Int): List<Int> {
  */
 fun convertToString(n: Int, base: Int): String {
     val newList = convert(n, base)
-    var line = buildString {  }
+    var line  = StringBuilder().toString()
+    val numFirstLetterInASCII = 87
     for (i in 0 until newList.size)
-        line += if (newList[i] > 9) (newList[i] + 87).toChar()
+        line += if (newList[i] > 9) (newList[i] + numFirstLetterInASCII).toChar()
         else newList[i]
     return line
 }
@@ -295,7 +296,7 @@ fun roman(n: Int): String {
     var countListChar = 12
     val numbersInDecimal = listOf(1,4,5,9,10,40,50,90,100,400,500,900,1000)
     val numbersInRoman = listOf<String>("I","IV","V","IX","X","XL","L","XC","C","CD","D","CM","M")
-    var line = buildString {  }
+    var line = StringBuilder().toString()
     while(copyN > 0){
         if(copyN >= numbersInDecimal[countListChar]) {
             val count = copyN / numbersInDecimal[countListChar]
