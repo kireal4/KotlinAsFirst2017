@@ -3,6 +3,7 @@
 package lesson6.task1
 
 import lesson1.task1.sqr
+import java.lang.Math.*
 
 /**
  * Точка на плоскости
@@ -96,6 +97,9 @@ data class Segment(val begin: Point, val end: Point) {
 
     override fun hashCode() =
             begin.hashCode() + end.hashCode()
+
+    fun center(): Point =
+            Point(begin.x + (end.x - begin.x) / 2, begin.y + (end.y - begin.y) / 2)
 }
 
 /**
@@ -104,7 +108,20 @@ data class Segment(val begin: Point, val end: Point) {
  * Дано множество точек. Вернуть отрезок, соединяющий две наиболее удалённые из них.
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
-fun diameter(vararg points: Point): Segment = TODO()
+fun diameter(vararg points: Point): Segment {
+    if (points.size < 2) throw IllegalArgumentException()
+    var distance = 0.0
+    var segment = Segment(points[0], points[1])
+    for (i in 0 until points.size)
+        for (k in i + 1 until points.size) {
+            val distancePoints = points[i].distance(points[k])
+            if (distancePoints > distance) {
+                distance = distancePoints
+                segment = Segment(points[i], points[k])
+            }
+        }
+    return segment
+}
 
 /**
  * Простая
@@ -159,14 +176,23 @@ fun lineBySegment(s: Segment): Line = lineByPoints(s.begin, s.end)
  *
  * Построить прямую по двум точкам
  */
-fun lineByPoints(a: Point, b: Point): Line = TODO()
+fun lineByPoints(a: Point, b: Point): Line {
+    val straight = atan((a.y - b.y) / (a.x - b.x))
+    return if (straight >= 0.0) Line(a, straight)
+    else Line(a, PI + straight)
+}
 
 /**
  * Сложная
  *
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
-fun bisectorByPoints(a: Point, b: Point): Line = TODO()
+fun bisectorByPoints(a: Point, b: Point): Line {
+    val segment = Segment(a, b).center()
+    val perpendicular = lineByPoints(a, b).angle
+    return if (perpendicular < Math.PI / 2) Line(segment, perpendicular + Math.PI / 2)
+    else Line(segment, perpendicular - Math.PI / 2)
+}
 
 /**
  * Средняя
@@ -185,7 +211,10 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
  * (построить окружность по трём точкам, или
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
-fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
+fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
+    val pointCenter = bisectorByPoints(a, b).crossPoint(bisectorByPoints(b, c))
+    return Circle(pointCenter, pointCenter.distance(a))
+}
 
 /**
  * Очень сложная
