@@ -126,16 +126,16 @@ fun dateDigitToStr(digital: String): String {
  */
 
 fun flattenPhoneNumber(phone: String): String {
-    if (phone.length == 0 || phone.indexOf('+') > 0) return ""
+    if (phone.isEmpty() || phone.indexOf('+',1) > 0) return ""
     val permissibleChars = '0'..'9'
     val permissibleChars2 = "() +-"
-    var totals = StringBuilder().toString()
+    val totals = StringBuilder()
     for (i in phone) {
         if (i !in permissibleChars && i !in permissibleChars2) return ""
-            if (i in permissibleChars || i == '+') totals += i
-                else if (i !in permissibleChars2) return ""
+        if (i in permissibleChars || i == '+') totals.append(i)
+        else if (i !in permissibleChars2) return ""
     }
-    return totals
+    return totals.toString()
 }
 
 /**
@@ -151,17 +151,17 @@ fun flattenPhoneNumber(phone: String): String {
 fun bestLongJump(jumps: String): Int? {
     if (jumps.isEmpty()) return -1
     var maxJump = -1
-        val jumpRes = jumps.trim().split(" ")
-        for (i in jumpRes) {
-            try {
-                if (i.isNotEmpty() && i.toInt() > maxJump)
-                    maxJump = i.toInt()
-            } catch (e: NumberFormatException) {
-                if (i == " " || i == "-" || i == "%" || i == "") continue
-                else return -1
-            }
+    val jumpRes = jumps.trim().split(" ")
+    for (i in jumpRes) {
+        try {
+            if (i.isNotEmpty() && i.toInt() > maxJump)
+                maxJump = i.toInt()
+        } catch (e: NumberFormatException) {
+            if (i == "-" || i == "%") continue
+            else return -1
         }
-        return maxJump
+    }
+    return maxJump
 }
 
 /**
@@ -178,7 +178,6 @@ fun bestHighJump(jumps: String): Int {
     var result = -1
     try {
         val tryJumps = jumps.split(" ")
-        val successfulJumps = mutableListOf<Int>()
         for (i in 1..tryJumps.size - 1 step 2) {
             val maxTry = tryJumps[i - 1].toInt()
             if ('+' in tryJumps[i] && result < maxTry) result = maxTry
@@ -199,6 +198,7 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
+    if (expression.isEmpty()) throw IllegalArgumentException()
     try {
         val numbers = expression.split(" ")
         var answer = numbers[0].toInt()
@@ -208,8 +208,7 @@ fun plusMinus(expression: String): Int {
             else
                 if (numbers[i - 1] == "-") {
                     answer -= numbers[i].toInt()
-        }
-        else throw IllegalArgumentException()
+                } else throw IllegalArgumentException()
         }
         return answer
     } catch (e: NumberFormatException) {
@@ -282,9 +281,9 @@ fun mostExpensive(description: String): String {
 fun fromRoman(roman: String): Int {
     if (roman.isEmpty()) return -1
     val numbersInDecimal =
-            listOf(1,4,5,9,10,40,50,90,100,400,500,900,1000)
+            listOf(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000)
     val numbersInRoman =
-            listOf<String>("I","IV","V","IX","X","XL","L","XC","C","CD","D","CM","M")
+            listOf<String>("I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M")
     var number = 0
     var numbCount = 0
     while (numbCount < roman.length) {
